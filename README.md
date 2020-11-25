@@ -1,7 +1,12 @@
 # Media Expert order tracer
 
 ## Install
-``npm install``
+
+```
+git clone https://github.com/dexterowy/Media-Expert-order-tracker.git
+cd Media-Expert-order-tracker
+npm install
+```
 
 ## Config
 Create `.env` file from `.env.template`
