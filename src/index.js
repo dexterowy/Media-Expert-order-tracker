@@ -10,8 +10,8 @@ const sendNotification = (status) => {
   client.messages
     .create({
       body: `PS5 status update:\n${status}`,
-      from: 'whatsapp:+14155238886',
-      to: 'whatsapp:+48693226902'
+      from: `whatsapp:${process.env.TWILIO_PHONE}`,
+      to: `whatsapp:${process.env.USER_PHONE}`
     })
     .then(message => {
       console.log(message.sid)
@@ -29,10 +29,10 @@ const handleGetStatus = (status) => {
 }
 
 const fetchStatus = () => {
-  axios.get('https://www.mediaexpert.pl/order/status/check/02314291095/mateusz.szczotarz%40gmail.com')
+  axios.get(`https://www.mediaexpert.pl/order/status/check/${process.env.ORDER_ID}/${process.env.EMAIL}`)
     .then(res => {
       handleGetStatus(res.data.name)
     })
 }
 
-setInterval(fetchStatus, 2000)
+setInterval(fetchStatus, process.env.INTERVAL)
