@@ -33,6 +33,9 @@ const fetchStatus = () => {
     .then(res => {
       handleGetStatus(res.data.name)
     })
+    .catch(err => {
+      console.log('Network error')
+    })
 }
 
 setInterval(fetchStatus, process.env.INTERVAL)
