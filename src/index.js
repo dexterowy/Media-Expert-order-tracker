@@ -5,6 +5,7 @@ const client = require('twilio')(process.env.SID, process.env.TOKEN);
 
 
 let globalStatus = ''
+let errorOccured = false
 
 const sendNotification = (status) => {
   client.messages
@@ -26,6 +27,11 @@ const handleGetStatus = (status) => {
     globalStatus = status
     sendNotification(status)
   }
+  else if (errorOccured) {
+    console.log('Network up')
+    console.log('PS5 status: ', status)
+    errorOccured = false
+  }
 }
 
 const fetchStatus = () => {
@@ -35,6 +41,7 @@ const fetchStatus = () => {
     })
     .catch(err => {
       console.log('Network error')
+      errorOccured = true
     })
 }
 
