@@ -28,7 +28,7 @@ const handleGetStatus = ({status, datetime}) => {
   if(globalDate !== datetime) {
     globalStatus = status
     globalDate = datetime
-    sendNotification(`${status}  ${moment(datetime).format('HH:MM:SS')}`)
+    sendNotification(`${status}  ${moment(datetime).format('HH:mm:SS')}`)
   }
   else if (errorOccured) {
     console.log('Network up')
