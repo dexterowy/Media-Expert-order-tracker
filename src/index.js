@@ -43,7 +43,9 @@ const fetchStatus = () => {
     'X-Requested-With': 'XMLHttpRequest'
     }})
     .then(res => {
-      handleGetStatus(res.data?.tracking_details[0])
+      if(res.data.tracking_details) {
+        handleGetStatus(res.data.tracking_details[0])
+      }
     })
     .catch(err => {
       console.log('Network error')
