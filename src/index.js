@@ -1,10 +1,12 @@
 require('dotenv').config()
+const moment = require('moment')
 const axios = require('axios')
 const client = require('twilio')(process.env.SID, process.env.TOKEN);
 
 
 
 let globalStatus = ''
+let globalDate = ''
 let errorOccured = false
 
 const sendNotification = (status) => {
@@ -22,10 +24,11 @@ const sendNotification = (status) => {
 
 }
 
-const handleGetStatus = (status) => {
-  if(globalStatus !== status) {
+const handleGetStatus = ({status, datetime}) => {
+  if(globalDate !== datetime) {
     globalStatus = status
-    sendNotification(status)
+    globalDate = datetime
+    sendNotification(`${status}  ${moment(datetime).format('HH:MM:SS')}`)
   }
   else if (errorOccured) {
     console.log('Network up')
@@ -35,9 +38,12 @@ const handleGetStatus = (status) => {
 }
 
 const fetchStatus = () => {
-  axios.get(`https://www.mediaexpert.pl/order/status/check/${process.env.ORDER_ID}/${process.env.EMAIL}`)
+  // axios.get(`https://www.mediaexpert.pl/order/status/check/${process.env.ORDER_ID}/${process.env.EMAIL}`)
+  axios.get(`https://inpost.pl/shipx-proxy/?number=521000019641922002850531`, {headers: {
+    'X-Requested-With': 'XMLHttpRequest'
+    }})
     .then(res => {
-      handleGetStatus(res.data.name)
+      handleGetStatus(res.data?.tracking_details[0])
     })
     .catch(err => {
       console.log('Network error')
